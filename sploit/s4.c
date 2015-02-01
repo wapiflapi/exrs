@@ -3,7 +3,7 @@
 #include	<stdio.h>
 #include	<err.h>
 
-char	name[256];
+char	name[1024];
 
 int	main(int argc, char **argv)
 {
