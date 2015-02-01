@@ -12,7 +12,7 @@ int		main(int argc, char **argv)
   printf("Welcome Stranger\n");
   printf("What is your password?\n");
 
-  if (read(0, buffer, 64) <= 0)
+  if (read(0, buffer, 48) <= 0)
     err(EXIT_FAILURE, "read");
 
   printf("If you're cool you'll get a shell.\n");
