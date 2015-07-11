@@ -25,7 +25,6 @@ int main(int argc, char **argv)
 
       if (read(fd, &num, sizeof num) != sizeof num || num == 0)
 	break;
-
       space = num * sizeof *entries;
 
       fprintf(stderr, "%#.8x entries will require %#x memory.\n", num, space);
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
 	  ssize_t done;
 
 	  if ((done = read(fd, dest, todo)) <= 0)
-	    err(EXIT_FAILURE, "read entry");
+	    err(EXIT_FAILURE, "read entry %p + %zx, (%d)", dest, todo, fd);
 	  dest += done;
 	  todo -= done;
 	}
@@ -71,15 +70,18 @@ int main(int argc, char **argv)
       storage[stored++] = entries;
 
       if (stored >= sizeof storage / sizeof *storage)
-	while (stored--)
-	  free(storage[stored]);
+	{
+	  fprintf(stderr, "NO MORE SPACE - FREE\n");
+	  while (stored)
+	    free(storage[--stored]);
 
+	}
     }
 
-  fprintf(stderr, "still %d entries left\n", stored);
+  fprintf(stderr, "All done. - FREE\n");
 
-  while (stored--)
-    free(storage[stored]);
+  while (stored)
+    free(storage[--stored]);
 
   return 0;
 }
