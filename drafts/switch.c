@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <err.h>
 
+
 int main(int argc, char **argv)
 {
   int fd;
@@ -67,10 +68,11 @@ int main(int argc, char **argv)
       ** Back to the original code:
       */
 
-      if (stored < sizeof storage / sizeof *storage)
-	storage[stored++] = entries;
-      else
-	free(entries);
+      storage[stored++] = entries;
+
+      if (stored >= sizeof storage / sizeof *storage)
+	while (stored--)
+	  free(storage[stored]);
 
     }
 
