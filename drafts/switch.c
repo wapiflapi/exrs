@@ -5,12 +5,11 @@
 
 int main(int argc, char **argv)
 {
-  (void) argc, (void) argv;
-
   int fd;
-
   void *storage[1024];
   unsigned int stored = 0;
+
+  (void) argc, (void) argv;
 
   if (argc <= 1)
     fd = 0;
@@ -23,10 +22,7 @@ int main(int argc, char **argv)
       unsigned int num;
       unsigned int space;
 
-      if (read(fd, &num, sizeof num) != sizeof num)
-	break;
-
-      if (num == 0)
+      if (read(fd, &num, sizeof num) != sizeof num || num == 0)
 	break;
 
       space = num * sizeof *entries;
@@ -63,7 +59,7 @@ int main(int argc, char **argv)
 	  if ((done = read(fd, dest, todo)) <= 0)
 	    err(EXIT_FAILURE, "read entry");
 	  dest += done;
-	  todo  -= done;
+	  todo -= done;
 	}
 
       /*
