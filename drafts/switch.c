@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   else if ((fd = open(argv[1], O_RDONLY)) < 0)
     err(EXIT_FAILURE, "open");
 
-  do
+  while (1)
     {
       void **entries;
       unsigned int num;
@@ -62,13 +62,17 @@ int main(int argc, char **argv)
 	  todo -= done;
 	}
 
+
       /*
       ** Back to the original code:
       */
 
-      storage[stored++] = entries;
+      if (stored < sizeof storage / sizeof *storage)
+	storage[stored++] = entries;
+      else
+	free(entries);
 
-    } while (stored < sizeof storage / sizeof *storage);
+    }
 
   fprintf(stderr, "still %d entries left\n", stored);
 
