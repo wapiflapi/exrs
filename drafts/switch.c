@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <err.h>
 
+#define DEBUG 0
 
 int main(int argc, char **argv)
 {
@@ -12,7 +13,7 @@ int main(int argc, char **argv)
 
   (void) argc, (void) argv;
 
-  if (argc <= 1)
+  if (argc != 2)
     fd = 0;
   else if ((fd = open(argv[1], O_RDONLY)) < 0)
     err(EXIT_FAILURE, "open");
@@ -27,7 +28,8 @@ int main(int argc, char **argv)
 	break;
       space = num * sizeof *entries;
 
-      fprintf(stderr, "%#.8x entries will require %#x memory.\n", num, space);
+      if (DEBUG && num != 1)
+      	fprintf(stderr, "%#.8x entries will require %#x memory.\n", num, space);
 
       if (!(entries = malloc(space)))
 	err(EXIT_FAILURE, "malloc");
@@ -50,7 +52,8 @@ int main(int argc, char **argv)
       char  *dest = (char *) entries;
       size_t todo = (size_t) num * sizeof *entries;
 
-      fprintf(stderr, "writing %#zx bytes from %p to %p\n", todo, dest, dest+todo);
+      if (DEBUG && num != 1)
+      	fprintf(stderr, "writing %#zx bytes from %p to %p\n", todo, dest, dest+todo);
 
       while (todo > 0)
 	{
@@ -71,6 +74,7 @@ int main(int argc, char **argv)
 
       if (stored >= sizeof storage / sizeof *storage)
 	{
+
 	  fprintf(stderr, "NO MORE SPACE - FREE\n");
 	  while (stored)
 	    free(storage[--stored]);
@@ -78,7 +82,7 @@ int main(int argc, char **argv)
 	}
     }
 
-  fprintf(stderr, "All done. - FREE\n");
+  fprintf(stderr, "All done. %d entries left - FREE\n", stored);
 
   while (stored)
     free(storage[--stored]);
