@@ -11,7 +11,7 @@ int		main(int argc, char **argv)
 
   printf("What is your password?\n");
 
-  if (read(0, buffer, 1024) <= 0)
+  if (read(0, buffer, 4096) <= 0)
     err(EXIT_FAILURE, "read");
 
   printf("If you're cool you'll get a shell.\n");

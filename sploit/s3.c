@@ -3,7 +3,7 @@
 #include	<stdio.h>
 #include	<err.h>
 
-char	name[1024];
+char	name[4096];
 
 int	main(int argc, char **argv)
 {
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
   printf("Welcome %s\n", name);
   printf("What is your password?\n");
 
-  if (read(0, buffer, 1024) <= 0)
+  if (read(0, buffer, 4096) <= 0)
     err(EXIT_FAILURE, "read");
 
   printf("If you're cool you'll get a shell.\n");
