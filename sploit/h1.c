@@ -16,11 +16,11 @@ int		main(int argc, char **argv)
       char *msg;
       int len;
 
-      if (!(msg = malloc(1024)))
+      if (!(msg = malloc(4096)))
 	err(EXIT_FAILURE, "malloc");
 
       strcpy(msg, "echo you: ");
-      if ((len = read(0, msg + 10, 1024 - 10)) <= 0)
+      if ((len = read(0, msg + 10, 4096 - 10)) <= 0)
 	err(EXIT_FAILURE, "read");
 
       msg[10+len-1] = 0;
